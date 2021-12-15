@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const VisualTimePicker = () => {
-  const QUARTERS = ['00', '15', '30', '45'];
+  const [isQuarterMode, setIsQuarterMode] = useState(true);
+  const QUARTERS = isQuarterMode ? ['00', '15', '30', '45'] : ['00'];
   const HOURS = 24;
-  const helperArr = [...Array(HOURS)].map((x) => 0);
+  const helperArr = Array(HOURS).fill(0);
   const timeStamps = helperArr.map((h, index) =>
     QUARTERS.map((q) => {
       const obj = {
@@ -28,6 +29,18 @@ const VisualTimePicker = () => {
 
   return (
     <>
+      <div style={{ display: 'block' }}>
+        <label htmlFor=''>
+          {' '}
+          {isQuarterMode
+            ? 'Wyłącz edycję kwadransów'
+            : 'Włącz edycję kwadransów'}{' '}
+        </label>
+        <input
+          type='checkbox'
+          onChange={() => setIsQuarterMode((prevState) => !prevState)}
+        />
+      </div>
       {timeStamps.map((t, index) => {
         return (
           <div
@@ -58,7 +71,7 @@ const VisualTimePicker = () => {
                     }}
                   >
                     {' '}
-                    {quarter.timeStr.slice(-2)}{' '}
+                    {isQuarterMode && quarter.timeStr.slice(-2)}{' '}
                   </div>
                   <div
                     style={{
